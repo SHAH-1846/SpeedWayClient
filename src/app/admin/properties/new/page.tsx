@@ -8,14 +8,43 @@ import PropertyForm from '@/components/forms/PropertyForm';
 import api from '@/lib/api';
 import type { PropertyInput } from '@/lib/validations';
 
+interface ImageFile {
+    file?: File;
+    url: string;
+    alt: string;
+    preview?: string;
+}
+
 export default function NewPropertyPage() {
     const router = useRouter();
     const [loading, setLoading] = useState(false);
 
-    const handleSubmit = async (data: PropertyInput) => {
+    const handleSubmit = async (data: PropertyInput, images: ImageFile[]) => {
         setLoading(true);
         try {
-            // Restructure data for API
+            // Step 1: Upload images if any have File objects
+            let uploadedImages: { url: string; alt: string }[] = [];
+
+            const filesToUpload = images.filter((img) => img.file);
+            const existingImages = images
+                .filter((img) => !img.file && img.url)
+                .map((img) => ({ url: img.url, alt: img.alt }));
+
+            if (filesToUpload.length > 0) {
+                const formData = new FormData();
+                filesToUpload.forEach((img) => {
+                    if (img.file) formData.append('images', img.file);
+                });
+
+                const uploadRes = await api.post('/upload', formData, {
+                    headers: { 'Content-Type': 'multipart/form-data' },
+                });
+                uploadedImages = uploadRes.data.data || [];
+            }
+
+            const allImages = [...existingImages, ...uploadedImages];
+
+            // Step 2: Create property with image URLs
             const payload = {
                 title: data.title,
                 description: data.description,
@@ -38,6 +67,7 @@ export default function NewPropertyPage() {
                     maxGuests: data.maxGuests,
                 },
                 amenities: data.amenities || [],
+                images: allImages,
                 featured: data.featured || false,
                 status: data.status || 'active',
             };
