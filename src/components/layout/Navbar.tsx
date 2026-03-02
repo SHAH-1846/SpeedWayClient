@@ -7,12 +7,16 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
     Home, Search, Menu, X, User, LogOut,
     LayoutDashboard, CalendarCheck, ChevronDown,
+    Info, MessageSquare,
 } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
+import { COMPANY } from '@/lib/companyConfig';
 
 const NAV_LINKS = [
     { href: '/', label: 'Home', icon: Home },
     { href: '/properties', label: 'Properties', icon: Search },
+    { href: '/about', label: 'About Us', icon: Info },
+    { href: '/contact', label: 'Contact', icon: MessageSquare },
 ];
 
 const Navbar: React.FC = () => {
@@ -39,8 +43,8 @@ const Navbar: React.FC = () => {
             initial={{ y: -100 }}
             animate={{ y: 0 }}
             className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isScrolled
-                    ? 'bg-slate-950/80 backdrop-blur-xl border-b border-slate-800/50 shadow-2xl'
-                    : 'bg-transparent'
+                ? 'bg-slate-950/80 backdrop-blur-xl border-b border-slate-800/50 shadow-2xl'
+                : 'bg-transparent'
                 }`}
         >
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -54,10 +58,10 @@ const Navbar: React.FC = () => {
                         </div>
                         <div className="hidden sm:block">
                             <h1 className="text-lg font-bold text-white leading-tight">
-                                Speed Way
+                                {COMPANY.brandName}
                             </h1>
                             <p className="text-[10px] text-amber-400 font-medium -mt-0.5 tracking-wider uppercase">
-                                Vacation Rentals
+                                {COMPANY.tagline}
                             </p>
                         </div>
                     </Link>

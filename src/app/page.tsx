@@ -11,6 +11,7 @@ import PropertyCard from '@/components/cards/PropertyCard';
 import Button from '@/components/ui/Button';
 import api from '@/lib/api';
 import type { Property } from '@/types';
+import { COMPANY } from '@/lib/companyConfig';
 
 // ─── Hero Section ──────────────────────────────────
 const HeroSection: React.FC = () => {
@@ -45,7 +46,7 @@ const HeroSection: React.FC = () => {
           >
             <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-medium
               bg-amber-500/10 border border-amber-500/20 text-amber-400 mb-6">
-              <Sparkles className="w-3.5 h-3.5" /> Premium Vacation Homes
+              <Sparkles className="w-3.5 h-3.5" /> {COMPANY.brandName} — Dubai, UAE
             </span>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight">
               Discover Your
@@ -54,8 +55,7 @@ const HeroSection: React.FC = () => {
               </span>
             </h1>
             <p className="mt-5 text-lg text-slate-300 leading-relaxed max-w-lg">
-              Handpicked luxury properties in the world&apos;s most desirable locations.
-              Experience the extraordinary.
+              {COMPANY.philosophy} Premium vacation homes across the UAE.
             </p>
           </motion.div>
 

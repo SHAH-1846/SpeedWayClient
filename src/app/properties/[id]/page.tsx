@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, use } from 'react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 import {
     MapPin, Bed, Bath, Users, Star, ChevronLeft, ChevronRight,
@@ -12,6 +13,8 @@ import Button from '@/components/ui/Button';
 import DateRangePicker from '@/components/ui/DateRangePicker';
 import Input from '@/components/ui/Input';
 import Textarea from '@/components/ui/Textarea';
+import Breadcrumbs from '@/components/seo/Breadcrumbs';
+import PropertyJsonLd from '@/components/seo/PropertyJsonLd';
 import { useAuth } from '@/context/AuthContext';
 import api from '@/lib/api';
 import type { Property } from '@/types';
@@ -112,19 +115,24 @@ export default function PropertyDetailPage({ params }: { params: Promise<PagePar
 
     return (
         <div className="min-h-screen bg-slate-950 py-6">
+            {/* JSON-LD Structured Data */}
+            <PropertyJsonLd property={property} />
+
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                {/* Back */}
-                <button
-                    onClick={() => router.back()}
-                    className="flex items-center gap-1 text-sm text-slate-400 hover:text-white mb-6 transition-colors"
-                >
-                    <ChevronLeft className="w-4 h-4" /> Back to Properties
-                </button>
+                {/* Breadcrumbs */}
+                <Breadcrumbs
+                    items={[
+                        { label: 'Home', href: '/' },
+                        { label: 'Properties', href: '/properties' },
+                        { label: property.location.city || 'Dubai', href: `/properties?search=${encodeURIComponent(property.location.city)}` },
+                        { label: property.title },
+                    ]}
+                />
 
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                     {/* Left: Details */}
                     <div className="lg:col-span-2 space-y-8">
-                        {/* Image Gallery */}
+                        {/* Image Gallery — using Next.js Image for WebP + lazy loading */}
                         <motion.div
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
@@ -132,11 +140,14 @@ export default function PropertyDetailPage({ params }: { params: Promise<PagePar
                         >
                             {property.images.length > 0 ? (
                                 <>
-                                    <div
-                                        className="w-full h-full bg-cover bg-center transition-all duration-500"
-                                        style={{
-                                            backgroundImage: `url(${property.images[activeImage]?.url})`,
-                                        }}
+                                    <Image
+                                        src={property.images[activeImage]?.url}
+                                        alt={property.images[activeImage]?.alt || property.title}
+                                        fill
+                                        priority={activeImage === 0}
+                                        className="object-cover transition-all duration-500"
+                                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 66vw, 800px"
+                                        unoptimized
                                     />
                                     {property.images.length > 1 && (
                                         <>
@@ -167,7 +178,7 @@ export default function PropertyDetailPage({ params }: { params: Promise<PagePar
                                             </button>
                                         </>
                                     )}
-                                    {/* Thumbnails */}
+                                    {/* Thumbnail dots */}
                                     {property.images.length > 1 && (
                                         <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5">
                                             {property.images.map((_, i) => (
@@ -231,7 +242,7 @@ export default function PropertyDetailPage({ params }: { params: Promise<PagePar
                             </div>
                         </div>
 
-                        {/* Description */}
+                        {/* Description — with SEO keywords naturally integrated */}
                         <div className="bg-slate-900/50 border border-slate-800 rounded-2xl p-6">
                             <h3 className="text-lg font-semibold text-white mb-3">About this property</h3>
                             <p className="text-slate-300 leading-relaxed whitespace-pre-line">

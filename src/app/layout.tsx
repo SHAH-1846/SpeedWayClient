@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import ClientLayout from "@/components/layout/ClientLayout";
+import { SEO, COMPANY, generateOrganizationSchema } from "@/lib/companyConfig";
 
 const inter = Inter({
   variable: "--font-geist-sans",
@@ -9,10 +10,25 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Speed Way Vacation Rentals | Luxury Home Rentals",
-  description:
-    "Discover luxury vacation homes curated for unforgettable experiences. Villas, apartments, cottages, and more — your dream getaway awaits.",
-  keywords: "vacation rentals, luxury homes, villas, beach houses, holiday homes",
+  metadataBase: new URL(SEO.url),
+  title: SEO.siteName,
+  description: SEO.description,
+  keywords: SEO.keywords,
+  alternates: {
+    canonical: '/',
+  },
+  openGraph: {
+    type: 'website',
+    siteName: COMPANY.brandName,
+    title: SEO.siteName,
+    description: SEO.description,
+    url: SEO.url,
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: SEO.siteName,
+    description: SEO.description,
+  },
 };
 
 export default function RootLayout({
@@ -20,8 +36,16 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const jsonLd = generateOrganizationSchema();
+
   return (
     <html lang="en" className="dark">
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      </head>
       <body className={`${inter.variable} antialiased bg-slate-950 text-slate-200`}>
         <ClientLayout>{children}</ClientLayout>
       </body>
