@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, Building, CalendarCheck, MessageSquare, ChevronLeft } from 'lucide-react';
+import { LayoutDashboard, Building, CalendarCheck, MessageSquare, Settings, ChevronLeft } from 'lucide-react';
 import ProtectedRoute from '@/components/auth/ProtectedRoute';
 
 const ADMIN_NAV = [
@@ -11,6 +11,7 @@ const ADMIN_NAV = [
     { href: '/admin/properties', label: 'Properties', icon: Building },
     { href: '/admin/bookings', label: 'Bookings', icon: CalendarCheck },
     { href: '/admin/enquiries', label: 'Enquiries', icon: MessageSquare },
+    { href: '/admin/settings', label: 'Website Content', icon: Settings },
 ];
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {

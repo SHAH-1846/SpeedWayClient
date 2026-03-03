@@ -13,6 +13,7 @@ import Button from '@/components/ui/Button';
 import { enquirySchema, type EnquiryInput } from '@/lib/validations';
 import api from '@/lib/api';
 import { COMPANY } from '@/lib/companyConfig';
+import { useSettings } from '@/hooks/useSettings';
 
 // ─── Contact Info ────────────────────────────────────
 const CONTACT_DETAILS = [
@@ -150,6 +151,33 @@ const EnquiryForm: React.FC = () => {
 
 // ─── Contact Page ────────────────────────────────────
 export default function ContactPage() {
+    const { settings } = useSettings();
+
+    const contactDetails = [
+        {
+            icon: MapPin,
+            label: 'Office Address',
+            value: settings?.companyInfo?.address || COMPANY.headquarters.full,
+            href: COMPANY.headquarters.googleMapsUrl,
+        },
+        {
+            icon: Phone,
+            label: 'Phone',
+            value: settings?.companyInfo?.phone || COMPANY.contact.phone,
+            href: `tel:${(settings?.companyInfo?.phone || COMPANY.contact.phone).replace(/\s+/g, '')}`,
+        },
+        {
+            icon: Mail,
+            label: 'Email',
+            value: settings?.companyInfo?.email || COMPANY.contact.email,
+            href: `mailto:${settings?.companyInfo?.email || COMPANY.contact.email}`,
+        },
+        {
+            icon: Clock,
+            label: 'Working Hours',
+            value: settings?.companyInfo?.workingHours || COMPANY.contact.workingHours,
+        },
+    ];
     return (
         <div className="min-h-screen bg-slate-950">
             {/* Hero */}
@@ -195,7 +223,7 @@ export default function ContactPage() {
                                 transition={{ duration: 0.6, delay: 0.3 }}
                                 className="space-y-4"
                             >
-                                {CONTACT_DETAILS.map((item, i) => (
+                                {contactDetails.map((item, i) => (
                                     <motion.div
                                         key={item.label}
                                         initial={{ opacity: 0, y: 15 }}

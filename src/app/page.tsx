@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   Search, MapPin, ChevronRight, Shield, Star, Clock,
   Sparkles, ArrowRight,
@@ -12,23 +12,47 @@ import Button from '@/components/ui/Button';
 import api from '@/lib/api';
 import type { Property } from '@/types';
 import { COMPANY } from '@/lib/companyConfig';
+import { useSettings } from '@/hooks/useSettings';
 
 // ─── Hero Section ──────────────────────────────────
 const HeroSection: React.FC = () => {
   const [search, setSearch] = useState('');
+  const { settings } = useSettings();
+  const [slideIdx, setSlideIdx] = useState(0);
+
+  const slides = settings?.hero?.length
+    ? settings.hero
+    : [{ heading: 'Discover Your Perfect Getaway', subheading: COMPANY.philosophy + ' Premium vacation homes across the UAE.', imageUrl: '' }];
+
+  // Auto-rotate slides
+  useEffect(() => {
+    if (slides.length <= 1) return;
+    const timer = setInterval(() => setSlideIdx((i) => (i + 1) % slides.length), 6000);
+    return () => clearInterval(timer);
+  }, [slides.length]);
+
+  const currentSlide = slides[slideIdx] || slides[0];
 
   return (
     <section className="relative min-h-[90vh] flex items-center overflow-hidden">
       {/* Background */}
       <div className="absolute inset-0">
-        <div
-          className="absolute inset-0 bg-cover bg-center"
-          style={{
-            backgroundImage:
-              'url(https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=1920&q=80)',
-            backgroundColor: '#0f172a',
-          }}
-        />
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={slideIdx}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.8 }}
+            className="absolute inset-0 bg-cover bg-center"
+            style={{
+              backgroundImage: currentSlide.imageUrl
+                ? `url(${currentSlide.imageUrl})`
+                : 'url(https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=1920&q=80)',
+              backgroundColor: '#0f172a',
+            }}
+          />
+        </AnimatePresence>
         <div className="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-950/85 to-slate-950/40" />
         <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent" />
       </div>
@@ -48,15 +72,35 @@ const HeroSection: React.FC = () => {
               bg-amber-500/10 border border-amber-500/20 text-amber-400 mb-6">
               <Sparkles className="w-3.5 h-3.5" /> {COMPANY.brandName} — Dubai, UAE
             </span>
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight">
-              Discover Your
-              <span className="block bg-gradient-to-r from-amber-400 to-orange-500 bg-clip-text text-transparent">
-                Perfect Getaway
-              </span>
-            </h1>
-            <p className="mt-5 text-lg text-slate-300 leading-relaxed max-w-lg">
-              {COMPANY.philosophy} Premium vacation homes across the UAE.
-            </p>
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={slideIdx}
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -15 }}
+                transition={{ duration: 0.5 }}
+              >
+                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight">
+                  {currentSlide.heading}
+                </h1>
+                {currentSlide.subheading && (
+                  <p className="mt-5 text-lg text-slate-300 leading-relaxed max-w-lg">
+                    {currentSlide.subheading}
+                  </p>
+                )}
+              </motion.div>
+            </AnimatePresence>
+
+            {/* Slide dots */}
+            {slides.length > 1 && (
+              <div className="flex gap-1.5 mt-6">
+                {slides.map((_, i) => (
+                  <button key={i} onClick={() => setSlideIdx(i)}
+                    className={`w-2 h-2 rounded-full transition-all ${i === slideIdx ? 'bg-amber-500 w-6' : 'bg-white/30 hover:bg-white/50'}`}
+                  />
+                ))}
+              </div>
+            )}
           </motion.div>
 
           {/* Search Bar */}
