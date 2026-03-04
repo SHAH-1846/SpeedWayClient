@@ -13,6 +13,7 @@ interface DateRangePickerProps {
     onStartChange: (date: Date | null) => void;
     onEndChange: (date: Date | null) => void;
     minDate?: Date;
+    excludeDateIntervals?: { start: Date; end: Date }[];
 }
 
 const DateRangePicker: React.FC<DateRangePickerProps> = ({
@@ -23,6 +24,7 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({
     onStartChange,
     onEndChange,
     minDate = new Date(),
+    excludeDateIntervals,
 }) => {
     return (
         <div className="space-y-1.5">
@@ -42,6 +44,7 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({
                         startDate={startDate}
                         endDate={endDate}
                         minDate={minDate}
+                        excludeDateIntervals={excludeDateIntervals}
                         placeholderText="Check-in"
                         dateFormat="MMM dd, yyyy"
                         className="w-full rounded-xl border border-slate-700 bg-slate-800/50 backdrop-blur-sm
@@ -62,6 +65,7 @@ const DateRangePicker: React.FC<DateRangePickerProps> = ({
                         startDate={startDate}
                         endDate={endDate}
                         minDate={startDate || minDate}
+                        excludeDateIntervals={excludeDateIntervals}
                         placeholderText="Check-out"
                         dateFormat="MMM dd, yyyy"
                         className="w-full rounded-xl border border-slate-700 bg-slate-800/50 backdrop-blur-sm

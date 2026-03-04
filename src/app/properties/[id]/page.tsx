@@ -36,6 +36,7 @@ export default function PropertyDetailPage({ params }: { params: Promise<PagePar
     const [property, setProperty] = useState<Property | null>(null);
     const [loading, setLoading] = useState(true);
     const [activeImage, setActiveImage] = useState(0);
+    const [excludeDateIntervals, setExcludeDateIntervals] = useState<{ start: Date; end: Date }[]>([]);
 
     // Booking state
     const [checkIn, setCheckIn] = useState<Date | null>(null);
@@ -47,17 +48,27 @@ export default function PropertyDetailPage({ params }: { params: Promise<PagePar
     const [bookingMessage, setBookingMessage] = useState('');
 
     useEffect(() => {
-        const fetchProperty = async () => {
+        const fetchData = async () => {
             try {
-                const { data: res } = await api.get(`/properties/${id}`);
-                setProperty(res.data);
+                const [propRes, availRes] = await Promise.all([
+                    api.get(`/properties/${id}`),
+                    api.get(`/properties/${id}/availability`),
+                ]);
+                setProperty(propRes.data.data);
+
+                // Convert unavailable ranges to excludeDateIntervals for the date picker
+                const intervals = (availRes.data.data || []).map((r: { startDate: string; endDate: string }) => ({
+                    start: new Date(r.startDate),
+                    end: new Date(r.endDate),
+                }));
+                setExcludeDateIntervals(intervals);
             } catch {
                 router.push('/properties');
             } finally {
                 setLoading(false);
             }
         };
-        fetchProperty();
+        fetchData();
     }, [id, router]);
 
     // Price calculation
@@ -293,6 +304,7 @@ export default function PropertyDetailPage({ params }: { params: Promise<PagePar
                                 endDate={checkOut}
                                 onStartChange={setCheckIn}
                                 onEndChange={setCheckOut}
+                                excludeDateIntervals={excludeDateIntervals}
                             />
 
                             <div className="grid grid-cols-2 gap-3">
