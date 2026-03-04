@@ -17,6 +17,7 @@ import Breadcrumbs from '@/components/seo/Breadcrumbs';
 import PropertyJsonLd from '@/components/seo/PropertyJsonLd';
 import { useAuth } from '@/context/AuthContext';
 import api from '@/lib/api';
+import { formatAED } from '@/lib/format';
 import type { Property } from '@/types';
 
 const AMENITY_ICONS: Record<string, React.ElementType> = {
@@ -313,7 +314,7 @@ export default function PropertyDetailPage({ params }: { params: Promise<PagePar
                         >
                             <div className="flex items-baseline gap-1">
                                 <span className="text-3xl font-bold text-white">
-                                    ${property.price.perNight}
+                                    {formatAED(property.price.perNight)}
                                 </span>
                                 <span className="text-slate-400">/night</span>
                             </div>
@@ -358,25 +359,25 @@ export default function PropertyDetailPage({ params }: { params: Promise<PagePar
                                 <div className="space-y-2 pt-3 border-t border-slate-800">
                                     <div className="flex justify-between text-sm text-slate-400">
                                         <span>
-                                            ${property.price.perNight} × {numberOfNights} nights
+                                            {formatAED(property.price.perNight)} × {numberOfNights} nights
                                         </span>
-                                        <span>${nightlyTotal}</span>
+                                        <span>{formatAED(nightlyTotal)}</span>
                                     </div>
                                     {cleaningFee > 0 && (
                                         <div className="flex justify-between text-sm text-slate-400">
                                             <span>Cleaning fee</span>
-                                            <span>${cleaningFee}</span>
+                                            <span>{formatAED(cleaningFee)}</span>
                                         </div>
                                     )}
                                     {serviceFee > 0 && (
                                         <div className="flex justify-between text-sm text-slate-400">
                                             <span>Service fee</span>
-                                            <span>${serviceFee}</span>
+                                            <span>{formatAED(serviceFee)}</span>
                                         </div>
                                     )}
                                     <div className="flex justify-between text-white font-semibold pt-2 border-t border-slate-800">
                                         <span>Total</span>
-                                        <span>${totalPrice}</span>
+                                        <span>{formatAED(totalPrice)}</span>
                                     </div>
                                 </div>
                             )}

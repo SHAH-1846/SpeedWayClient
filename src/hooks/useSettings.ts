@@ -58,6 +58,7 @@ export interface SiteSettings {
     partners: Partner[];
     companyInfo: CompanyInfo;
     aboutContent: AboutContent;
+    googleMapsEmbedUrl?: string;
     auditLog?: AuditEntry[];
 }
 

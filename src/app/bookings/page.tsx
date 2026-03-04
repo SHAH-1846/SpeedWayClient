@@ -6,6 +6,7 @@ import { motion } from 'framer-motion';
 import { CalendarCheck, MapPin, Clock, CreditCard, Loader2, Calendar } from 'lucide-react';
 import ProtectedRoute from '@/components/auth/ProtectedRoute';
 import api from '@/lib/api';
+import { formatAED } from '@/lib/format';
 import type { Booking } from '@/types';
 
 function BookingCard({ booking, index }: { booking: Booking; index: number }) {
@@ -99,7 +100,7 @@ function BookingCard({ booking, index }: { booking: Booking; index: number }) {
                                 {booking.paymentStatus}
                             </span>
                         </div>
-                        <span className="text-lg font-bold text-white">${booking.totalPrice}</span>
+                        <span className="text-lg font-bold text-white">{formatAED(booking.totalPrice)}</span>
                     </div>
                 </div>
             </div>

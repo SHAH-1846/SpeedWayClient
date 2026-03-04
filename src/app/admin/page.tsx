@@ -7,6 +7,7 @@ import {
     ArrowUp, ArrowDown, Loader2, MessageSquare,
 } from 'lucide-react';
 import api from '@/lib/api';
+import { formatAED } from '@/lib/format';
 
 interface StatCardProps {
     title: string;
@@ -130,7 +131,7 @@ export default function AdminDashboardPage() {
         },
         {
             title: 'Total Revenue',
-            value: `$${(stats?.totalRevenue || 0).toLocaleString()}`,
+            value: formatAED(stats?.totalRevenue || 0),
             icon: DollarSign,
             color: 'bg-amber-500/10 text-amber-400',
         },
@@ -199,7 +200,7 @@ export default function AdminDashboardPage() {
                                             {booking.status}
                                         </span>
                                         <span className="text-sm font-semibold text-white">
-                                            ${booking.totalPrice}
+                                            {formatAED(booking.totalPrice)}
                                         </span>
                                     </div>
                                 </div>

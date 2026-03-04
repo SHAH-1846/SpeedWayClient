@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Loader2, CalendarCheck, Eye } from 'lucide-react';
 import api from '@/lib/api';
+import { formatAED } from '@/lib/format';
 import type { Booking } from '@/types';
 
 export default function AdminBookingsPage() {
@@ -97,7 +98,7 @@ export default function AdminBookingsPage() {
                                                 {new Date(booking.checkOut).toLocaleDateString()}
                                             </td>
                                             <td className="px-6 py-3.5 text-sm font-semibold text-white">
-                                                ${booking.totalPrice}
+                                                {formatAED(booking.totalPrice)}
                                             </td>
                                             <td className="px-6 py-3.5">
                                                 <select

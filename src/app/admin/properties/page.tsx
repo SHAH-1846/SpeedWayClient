@@ -6,6 +6,7 @@ import { motion } from 'framer-motion';
 import { Plus, Pencil, Trash2, Loader2, Building, Eye } from 'lucide-react';
 import Button from '@/components/ui/Button';
 import api from '@/lib/api';
+import { formatAED } from '@/lib/format';
 import type { Property } from '@/types';
 
 export default function AdminPropertiesPage() {
@@ -108,16 +109,16 @@ export default function AdminPropertiesPage() {
 
                                 {/* Price */}
                                 <div className="sm:col-span-2 text-sm text-white font-medium">
-                                    ${property.price.perNight}/night
+                                    {formatAED(property.price.perNight)}/night
                                 </div>
 
                                 {/* Status */}
                                 <div className="sm:col-span-1">
                                     <span className={`inline-flex w-2 h-2 rounded-full ${property.status === 'active'
-                                            ? 'bg-green-400'
-                                            : property.status === 'inactive'
-                                                ? 'bg-red-400'
-                                                : 'bg-yellow-400'
+                                        ? 'bg-green-400'
+                                        : property.status === 'inactive'
+                                            ? 'bg-red-400'
+                                            : 'bg-yellow-400'
                                         }`} />
                                 </div>
 

@@ -28,7 +28,6 @@ const SORT_OPTIONS = [
     { value: 'createdAt', label: 'Oldest First' },
     { value: 'price.perNight', label: 'Price: Low → High' },
     { value: '-price.perNight', label: 'Price: High → Low' },
-    { value: '-rating', label: 'Top Rated' },
 ];
 
 function PropertiesContent() {
@@ -165,14 +164,14 @@ function PropertiesContent() {
                                 onChange={(e) => setType(e.target.value)}
                             />
                             <Input
-                                label="Min Price ($)"
+                                label="Min Price (AED)"
                                 type="number"
                                 placeholder="0"
                                 value={minPrice}
                                 onChange={(e) => setMinPrice(e.target.value)}
                             />
                             <Input
-                                label="Max Price ($)"
+                                label="Max Price (AED)"
                                 type="number"
                                 placeholder="Any"
                                 value={maxPrice}

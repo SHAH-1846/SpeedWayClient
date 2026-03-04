@@ -233,18 +233,28 @@ function BannerEditor({
 
 // ─── Company Profile Editor ──────────────────────────
 function ProfileEditor({
-    companyInfo, chairmansNote, aboutContent,
+    companyInfo, chairmansNote, aboutContent, googleMapsEmbedUrl,
     onInfoChange, onNoteChange, onAboutChange, onSave, saving,
 }: {
     companyInfo: SiteSettings['companyInfo'];
     chairmansNote: string;
     aboutContent: SiteSettings['aboutContent'];
+    googleMapsEmbedUrl: string;
     onInfoChange: (c: SiteSettings['companyInfo']) => void;
     onNoteChange: (s: string) => void;
     onAboutChange: (a: SiteSettings['aboutContent']) => void;
-    onSave: () => void;
+    onSave: (mapsUrl: string) => void;
     saving: boolean;
 }) {
+    const [mapsUrl, setMapsUrl] = React.useState(googleMapsEmbedUrl);
+
+    React.useEffect(() => {
+        setMapsUrl(googleMapsEmbedUrl);
+    }, [googleMapsEmbedUrl]);
+
+    const handleSaveProfile = () => {
+        onSave(mapsUrl);
+    };
     return (
         <div className="space-y-8">
             {/* Contact Info */}
@@ -258,6 +268,17 @@ function ProfileEditor({
                 <div className="mt-4 space-y-4">
                     <Textarea label="Office Address" rows={2} value={companyInfo.address} onChange={(e) => onInfoChange({ ...companyInfo, address: e.target.value })} />
                     <Input label="Working Hours" value={companyInfo.workingHours} onChange={(e) => onInfoChange({ ...companyInfo, workingHours: e.target.value })} />
+                    <div>
+                        <Input
+                            label="Google Maps Embed URL"
+                            placeholder="https://www.google.com/maps/embed?pb=..."
+                            value={mapsUrl}
+                            onChange={(e) => setMapsUrl(e.target.value)}
+                        />
+                        <p className="text-xs text-slate-500 mt-1">
+                            Go to Google Maps → Share → Embed a map → Copy the src URL from the iframe code.
+                        </p>
+                    </div>
                 </div>
             </div>
 
@@ -322,7 +343,7 @@ function ProfileEditor({
             </div>
 
             <div className="flex justify-end">
-                <Button onClick={onSave} loading={saving}>
+                <Button onClick={handleSaveProfile} loading={saving}>
                     <Save className="w-4 h-4" /> Save Profile
                 </Button>
             </div>
@@ -548,6 +569,7 @@ export default function AdminSettingsPage() {
     const [companyInfo, setCompanyInfo] = useState<SiteSettings['companyInfo']>({
         phone: '', email: '', address: '', workingHours: '',
     });
+    const [googleMapsEmbedUrl, setGoogleMapsEmbedUrl] = useState('');
     const [aboutContent, setAboutContent] = useState<SiteSettings['aboutContent']>({
         philosophy: '', coreServices: [], keyProjects: [],
     });
@@ -560,6 +582,7 @@ export default function AdminSettingsPage() {
             setCompanyStats(settings.companyStats || { yearsExperience: '', propertiesManaged: '', satisfiedClients: '', guestRating: '' });
             setPartners(settings.partners || []);
             setCompanyInfo(settings.companyInfo || { phone: '', email: '', address: '', workingHours: '' });
+            setGoogleMapsEmbedUrl(settings.googleMapsEmbedUrl || '');
             setAboutContent(settings.aboutContent || { philosophy: '', coreServices: [], keyProjects: [] });
         }
     }, [settings]);
@@ -635,10 +658,11 @@ export default function AdminSettingsPage() {
                         companyInfo={companyInfo}
                         chairmansNote={chairmansNote}
                         aboutContent={aboutContent}
+                        googleMapsEmbedUrl={googleMapsEmbedUrl}
                         onInfoChange={setCompanyInfo}
                         onNoteChange={setChairmansNote}
                         onAboutChange={setAboutContent}
-                        onSave={() => handleSave({ companyInfo, chairmansNote, aboutContent })}
+                        onSave={(mapsUrl) => handleSave({ companyInfo, chairmansNote, aboutContent, googleMapsEmbedUrl: mapsUrl })}
                         saving={saving}
                     />
                 )}

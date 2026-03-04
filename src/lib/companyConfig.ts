@@ -40,9 +40,9 @@ export const COMPANY = Object.freeze({
         full: 'The Atrium Building, Al Mankhool, 2nd Floor, Office No: 208, Dubai, United Arab Emirates',
         mapCoords: Object.freeze({ lat: 25.2505, lng: 55.2974 }),
         googleMapsUrl:
-            'https://maps.google.com/?q=The+Atrium+Building+Al+Mankhool+Dubai',
+            'https://maps.app.goo.gl/rBqg28BagiofsT2a7',
         embedUrl:
-            'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3608.6!2d55.298!3d25.2485!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f43348a67e24b%3A0xff45e502e1ceb7e2!2sAl%20Mankhool%20-%20Bur%20Dubai%20-%20Dubai%20-%20United%20Arab%20Emirates!5e0!3m2!1sen!2s!4v1700000000000!5m2!1sen!2s',
+            'https://maps.google.com/maps?q=Speedway+Properties+LLC,Al+Mankhool,Bur+Dubai&t=&z=15&ie=UTF8&iwloc=&output=embed',
     }),
 
     // ── Services ──────────────────────────────────────

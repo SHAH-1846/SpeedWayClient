@@ -169,21 +169,21 @@ const PropertyForm: React.FC<PropertyFormProps> = ({
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
                     <Input
-                        label="Price per Night ($)"
+                        label="Price per Night (AED)"
                         type="number"
                         placeholder="0"
                         error={errors.pricePerNight?.message}
                         {...register('pricePerNight', { valueAsNumber: true })}
                     />
                     <Input
-                        label="Cleaning Fee ($)"
+                        label="Cleaning Fee (AED)"
                         type="number"
                         placeholder="0"
                         error={errors.cleaningFee?.message}
                         {...register('cleaningFee', { valueAsNumber: true })}
                     />
                     <Input
-                        label="Service Fee ($)"
+                        label="Service Fee (AED)"
                         type="number"
                         placeholder="0"
                         error={errors.serviceFee?.message}

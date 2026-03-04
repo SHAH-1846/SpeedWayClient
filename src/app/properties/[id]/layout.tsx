@@ -49,7 +49,7 @@ export async function generateMetadata({
     }
 
     const title = `${property.title} in ${property.location.city} | ${COMPANY.brandName}`;
-    const description = `${property.description.substring(0, 155)}… — ${property.bedrooms} bed, ${property.bathrooms} bath, up to ${property.maxGuests} guests. From $${property.price.perNight}/night. Book on ${COMPANY.brandName}.`;
+    const description = `${property.description.substring(0, 155)}… — ${property.bedrooms} bed, ${property.bathrooms} bath, up to ${property.maxGuests} guests. From AED ${property.price.perNight}/night. Book on ${COMPANY.brandName}.`;
     const imageUrl = property.images[0]?.url || '';
     const url = `${SEO.url}/properties/${id}`;
 

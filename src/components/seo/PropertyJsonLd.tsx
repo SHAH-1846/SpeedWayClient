@@ -46,7 +46,7 @@ const PropertyJsonLd: React.FC<PropertyJsonLdProps> = ({ property }) => {
             '@type': 'QuantitativeValue',
             value: property.maxGuests,
         },
-        priceRange: `$${property.price.perNight}/night`,
+        priceRange: `AED ${property.price.perNight}/night`,
         amenityFeature: property.amenities.map((a) => ({
             '@type': 'LocationFeatureSpecification',
             name: a.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase()),

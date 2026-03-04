@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { MapPin, Bed, Bath, Users, Star } from 'lucide-react';
 import type { Property } from '@/types';
+import { formatAED } from '@/lib/format';
 
 interface PropertyCardProps {
     property: Property;
@@ -53,7 +54,7 @@ const PropertyCard: React.FC<PropertyCardProps> = ({ property, index = 0 }) => {
                         <div className="absolute bottom-3 right-3">
                             <div className="bg-slate-950/70 backdrop-blur-sm border border-slate-700/50 rounded-xl px-3 py-1.5">
                                 <span className="text-lg font-bold text-white">
-                                    ${property.price.perNight}
+                                    {formatAED(property.price.perNight)}
                                 </span>
                                 <span className="text-xs text-slate-400">/night</span>
                             </div>

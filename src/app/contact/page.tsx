@@ -266,7 +266,7 @@ export default function ContactPage() {
                                 className="rounded-2xl overflow-hidden border border-slate-800/50"
                             >
                                 <iframe
-                                    src={COMPANY.headquarters.embedUrl}
+                                    src={settings?.googleMapsEmbedUrl || COMPANY.headquarters.embedUrl}
                                     width="100%"
                                     height="280"
                                     style={{ border: 0, filter: 'invert(90%) hue-rotate(180deg) saturate(0.3)' }}
