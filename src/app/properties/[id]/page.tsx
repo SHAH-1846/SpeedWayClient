@@ -92,22 +92,42 @@ export default function PropertyDetailPage({ params }: { params: Promise<PagePar
 
         setBookingLoading(true);
         setBookingMessage('');
-        try {
-            const { data: res } = await api.post('/bookings', {
-                property: property?._id,
-                checkIn: checkIn.toISOString(),
-                checkOut: checkOut.toISOString(),
-                guests: { adults, children: children },
-                specialRequests,
-            });
 
-            // Simulate payment
-            const bookingId = res.data._id;
-            await api.put(`/bookings/${bookingId}/pay`);
-            setBookingMessage('🎉 Booking confirmed! Redirecting to your bookings...');
-            setTimeout(() => router.push('/bookings'), 2000);
+        const bookingPayload = {
+            property: property?._id,
+            checkIn: checkIn.toISOString(),
+            checkOut: checkOut.toISOString(),
+            guests: { adults, children: children },
+            specialRequests,
+        };
+
+        try {
+            // Try Stripe checkout first
+            const { data: stripeRes } = await api.post('/bookings/create-checkout-session', bookingPayload);
+            // Redirect to Stripe hosted checkout
+            if (stripeRes.data?.url) {
+                window.location.href = stripeRes.data.url;
+                return;
+            }
         } catch (err: unknown) {
-            const error = err as { response?: { data?: { message?: string } } };
+            const error = err as { response?: { status?: number; data?: { message?: string } } };
+
+            // If Stripe not configured (503), fall back to simulated payment
+            if (error.response?.status === 503) {
+                try {
+                    const { data: res } = await api.post('/bookings', bookingPayload);
+                    const bookingId = res.data._id;
+                    await api.put(`/bookings/${bookingId}/pay`);
+                    setBookingMessage('🎉 Booking confirmed! Redirecting to your bookings...');
+                    setTimeout(() => router.push('/bookings'), 2000);
+                    return;
+                } catch (fallbackErr: unknown) {
+                    const fbError = fallbackErr as { response?: { data?: { message?: string } } };
+                    setBookingMessage(fbError.response?.data?.message || 'Booking failed. Please try again.');
+                    return;
+                }
+            }
+
             setBookingMessage(error.response?.data?.message || 'Booking failed. Please try again.');
         } finally {
             setBookingLoading(false);
