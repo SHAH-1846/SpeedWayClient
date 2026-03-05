@@ -19,6 +19,7 @@ import { useAuth } from '@/context/AuthContext';
 import api from '@/lib/api';
 import { formatAED } from '@/lib/format';
 import type { Property } from '@/types';
+import ExternalPlatforms from '@/components/ui/ExternalPlatforms';
 
 const AMENITY_ICONS: Record<string, React.ElementType> = {
     wifi: Wifi, pool: Waves, parking: Car, 'air-conditioning': Snowflake,
@@ -402,6 +403,12 @@ export default function PropertyDetailPage({ params }: { params: Promise<PagePar
                         </motion.div>
                     </div>
                 </div>
+
+                {/* External Platforms */}
+                <ExternalPlatforms
+                    links={property.externalLinks}
+                    variant="property"
+                />
             </div>
         </div>
     );

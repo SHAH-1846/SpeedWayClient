@@ -45,6 +45,11 @@ export interface Property {
     rating: number;
     reviewCount: number;
     owner: { name: string; avatar: string } | string;
+    externalLinks?: {
+        airbnb?: string;
+        bookingCom?: string;
+        agoda?: string;
+    };
     createdAt: string;
     updatedAt: string;
 }

@@ -3,10 +3,37 @@
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { MapPin, Phone, Mail, Instagram, Facebook, Twitter } from 'lucide-react';
+import { MapPin, Phone, Mail, Instagram, Facebook, Twitter, ExternalLink } from 'lucide-react';
 import { COMPANY } from '@/lib/companyConfig';
+import { useSettings } from '@/hooks/useSettings';
+
+// ─── Find-Us-On Platform Links ──────────────────────
+const BOOKING_PLATFORMS = [
+    {
+        name: 'Airbnb',
+        url: 'https://www.airbnb.ae/rooms/1586782882613135635',
+        color: '#FF5A5F',
+    },
+    {
+        name: 'Booking.com',
+        url: 'https://www.booking.com/Share-24JCOS',
+        color: '#003580',
+    },
+    {
+        name: 'Agoda',
+        url: 'https://www.agoda.com/speedway-vacation-homes-h84383914/hotel/dubai-ae.html',
+        color: '#5391F0',
+    },
+];
 
 const Footer: React.FC = () => {
+    const { settings } = useSettings();
+
+    // Use CMS data with fallback to hardcoded config
+    const phone = settings?.companyInfo?.phone || COMPANY.contact.phone;
+    const email = settings?.companyInfo?.email || COMPANY.contact.email;
+    const address = settings?.companyInfo?.address || COMPANY.headquarters.full;
+
     return (
         <footer className="bg-slate-950 border-t border-slate-800/50">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
@@ -77,11 +104,32 @@ const Footer: React.FC = () => {
                         </ul>
                     </div>
 
-                    {/* Property Types */}
+                    {/* Find Us On */}
                     <div>
-                        <h4 className="text-white font-semibold mb-4">Property Types</h4>
+                        <h4 className="text-white font-semibold mb-4">Find Us On</h4>
                         <ul className="space-y-2.5">
-                            {['Villas', 'Apartments', 'Cottages', 'Cabins', 'Penthouses', 'Beach Houses'].map(
+                            {BOOKING_PLATFORMS.map((platform) => (
+                                <li key={platform.name}>
+                                    <a
+                                        href={platform.url}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors group"
+                                    >
+                                        <span
+                                            className="w-2 h-2 rounded-full flex-shrink-0"
+                                            style={{ backgroundColor: platform.color }}
+                                        />
+                                        {platform.name}
+                                        <ExternalLink className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity" />
+                                    </a>
+                                </li>
+                            ))}
+                        </ul>
+
+                        <h4 className="text-white font-semibold mb-3 mt-6">Property Types</h4>
+                        <ul className="space-y-2.5">
+                            {['Villas', 'Apartments', 'Cottages', 'Penthouses'].map(
                                 (type) => (
                                     <li key={type}>
                                         <Link
@@ -107,27 +155,25 @@ const Footer: React.FC = () => {
                                     target="_blank"
                                     className="hover:text-amber-400 transition-colors"
                                 >
-                                    {COMPANY.headquarters.building}, {COMPANY.headquarters.area},<br />
-                                    {COMPANY.headquarters.floor}, {COMPANY.headquarters.office},<br />
-                                    {COMPANY.headquarters.city}, {COMPANY.headquarters.country}
+                                    {address}
                                 </a>
                             </li>
                             <li>
                                 <a
-                                    href={COMPANY.contact.phoneHref}
+                                    href={`tel:${phone.replace(/\s+/g, '')}`}
                                     className="flex items-center gap-2.5 text-sm text-slate-400 hover:text-amber-400 transition-colors"
                                 >
                                     <Phone className="w-4 h-4 text-amber-500 flex-shrink-0" />
-                                    {COMPANY.contact.phone}
+                                    {phone}
                                 </a>
                             </li>
                             <li>
                                 <a
-                                    href={COMPANY.contact.emailHref}
+                                    href={`mailto:${email}`}
                                     className="flex items-center gap-2.5 text-sm text-slate-400 hover:text-amber-400 transition-colors"
                                 >
                                     <Mail className="w-4 h-4 text-amber-500 flex-shrink-0" />
-                                    {COMPANY.contact.email}
+                                    {email}
                                 </a>
                             </li>
                         </ul>

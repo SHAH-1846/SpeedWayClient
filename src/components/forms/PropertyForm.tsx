@@ -345,6 +345,32 @@ const PropertyForm: React.FC<PropertyFormProps> = ({
                 />
             </section>
 
+            {/* ── External Booking Links ── */}
+            <section className="bg-slate-800/30 rounded-2xl border border-slate-700/30 p-6">
+                <div className="flex items-center gap-2 mb-4">
+                    <Home className="w-5 h-5 text-amber-400" />
+                    <h2 className="text-lg font-semibold text-white">External Booking Links</h2>
+                </div>
+                <p className="text-sm text-slate-400 mb-4">Paste the listing URL for each platform (optional).</p>
+                <div className="space-y-4">
+                    <Input
+                        label="Airbnb Listing URL"
+                        placeholder="https://www.airbnb.ae/rooms/..."
+                        {...register('externalLinks.airbnb')}
+                    />
+                    <Input
+                        label="Booking.com Listing URL"
+                        placeholder="https://www.booking.com/hotel/..."
+                        {...register('externalLinks.bookingCom')}
+                    />
+                    <Input
+                        label="Agoda Listing URL"
+                        placeholder="https://www.agoda.com/..."
+                        {...register('externalLinks.agoda')}
+                    />
+                </div>
+            </section>
+
             {/* ── Submit ── */}
             <div className="flex justify-end gap-3">
                 <Button type="button" variant="ghost">

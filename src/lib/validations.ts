@@ -55,6 +55,11 @@ export const propertySchema = z.object({
     maxGuests: z.number({ error: 'Max guests is required' }).int().min(1),
     featured: z.boolean().optional().default(false),
     status: z.enum(['active', 'inactive', 'maintenance']).optional().default('active'),
+    externalLinks: z.object({
+        airbnb: z.string().optional().default(''),
+        bookingCom: z.string().optional().default(''),
+        agoda: z.string().optional().default(''),
+    }).optional(),
 });
 
 // ─── Booking ──────────────────────────────────────

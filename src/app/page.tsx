@@ -13,6 +13,7 @@ import api from '@/lib/api';
 import type { Property } from '@/types';
 import { COMPANY } from '@/lib/companyConfig';
 import { useSettings } from '@/hooks/useSettings';
+import ExternalPlatforms from '@/components/ui/ExternalPlatforms';
 
 // ─── Hero Section ──────────────────────────────────
 const HeroSection: React.FC = () => {
@@ -343,6 +344,7 @@ export default function HomePage() {
       <FeaturesSection />
       <FeaturedSection />
       <CTASection />
+      <ExternalPlatforms variant="home" />
     </>
   );
 }
